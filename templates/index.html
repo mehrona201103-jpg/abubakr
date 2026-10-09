@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Для Абубакра ❤️</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Montserrat:wght@400;600&display=swap');
+        
+        body {
+            margin: 0;
+            padding: 0;
+            /* Стильный темный фон, который нравится парням */
+            background-color: #1a1b26; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+            color: #c0caf5;
+        }
+
+        /* Экран с сердечком */
+        #intro-screen {
+            text-align: center;
+            transition: opacity 1s ease;
+        }
+
+        .heart-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto;
+            cursor: pointer;
+        }
+
+        .heart {
+            font-size: 150px;
+            /* Цвет пустого сердечка */
+            color: #24283b; 
+            position: absolute;
+            top: -20px;
+            left: 0;
+            z-index: 1;
+        }
+
+        .heart-fill {
+            font-size: 150px;
+            /* Глубокий красный/рубиновый цвет */
+            color: #f7768e; 
+            text-shadow: 0 0 20px rgba(247, 118, 142, 0.4);
+            position: absolute;
+            top: -20px;
+            left: 0;
+            z-index: 2;
+            clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
+            transition: clip-path 3s ease-in-out;
+        }
+
+        .click-text {
+            margin-top: 50px;
+            font-size: 18px;
+            color: #f7768e;
+            font-weight: 600;
+            letter-spacing: 1px;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        /* Экран с письмом */
+        #letter-screen {
+            display: none;
+            background: #24283b;
+            padding: 35px 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            max-width: 420px;
+            width: 85%;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .letter-text {
+            font-family: 'Caveat', cursive;
+            font-size: 26px;
+            line-height: 1.4;
+            color: #e0e4f5;
+            text-align: left;
+            margin-bottom: 35px;
+        }
+
+        .signature {
+            text-align: right;
+            font-weight: bold;
+            color: #f7768e;
+            margin-top: 15px;
+        }
+
+        /* Рейтинг */
+        .rating-title {
+            font-size: 16px;
+            color: #9aa5ce;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .stars {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 25px;
+            cursor: pointer;
+        }
+
+        .star {
+            font-size: 28px;
+            color: #1a1b26; /* Цвет неактивной звездочки-сердечка */
+            transition: color 0.3s, transform 0.2s;
+        }
+
+        .star:hover {
+            transform: scale(1.2);
+        }
+
+        .star.active {
+            color: #f7768e;
+            text-shadow: 0 0 10px rgba(247, 118, 142, 0.5);
+        }
+
+        /* Кнопка TikTok */
+        #tiktok-btn {
+            display: none;
+            background-color: #f7768e;
+            color: #1a1b26;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        #tiktok-btn:hover {
+            background-color: #ff8a9f;
+        }
+
+        #tiktok-btn:active {
+            transform: scale(0.97);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Экран загрузки сердечка -->
+    <div id="intro-screen">
+        <div class="heart-container" onclick="openLetter()">
+            <div class="heart">❤</div>
+            <div class="heart-fill" id="heart-fill">❤</div>
+        </div>
+        <div class="click-text" id="click-text">Нажми на сердечко</div>
+    </div>
+
+    <!-- Письмо -->
+    <div id="letter-screen">
+        <div class="letter-text">
+            Дорогой Абубакр! <br><br>
+            Я просто хотела сказать, как много ты для меня значишь. С тобой мне всегда тепло, спокойно и надежно. Ты умеешь поддержать, когда это нужно, и рассмешить, когда мне грустно.<br><br>
+            Я очень ценю твою заботу, твою силу и то, какой ты настоящий. Спасибо тебе за то, что ты есть в моей жизни. <br>
+            <div class="signature">Твоя Нозанин ❤️</div>
+        </div>
+        
+        <div class="rating-title">Оцени мою открытку (от 1 до 10):</div>
+        <div class="stars" id="stars-container">
+            <!-- Сердечки сгенерируются через JS -->
+        </div>
+
+        <button id="tiktok-btn" onclick="shareToTikTok()">Отправить ответ в TikTok 🎵</button>
+    </div>
+
+    <script>
+        // Анимация наполнения сердечка при загрузке
+        window.onload = () => {
+            setTimeout(() => {
+                document.getElementById('heart-fill').style.clipPath = 'polygon(0 0, 100% 0, 100% 100%, 0 100%)';
+            }, 500);
+
+            setTimeout(() => {
+                document.getElementById('click-text').style.opacity = '1';
+            }, 3500);
+        };
+
+        // Открытие письма
+        function openLetter() {
+            const intro = document.getElementById('intro-screen');
+            const letter = document.getElementById('letter-screen');
+
+            intro.style.opacity = '0';
+            setTimeout(() => {
+                intro.style.display = 'none';
+                letter.style.display = 'block';
+                setTimeout(() => {
+                    letter.style.opacity = '1';
+                }, 50);
+            }, 1000);
+        }
+
+        // Логика рейтинга
+        const starsContainer = document.getElementById('stars-container');
+        let selectedRating = 0;
+
+        for (let i = 1; i <= 10; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            star.innerHTML = '❤';
+            star.dataset.value = i;
+            
+            star.addEventListener('click', (e) => {
+                selectedRating = parseInt(e.target.dataset.value);
+                updateStars(selectedRating);
+                document.getElementById('tiktok-btn').style.display = 'block';
+            });
+
+            starsContainer.appendChild(star);
+        }
+
+        function updateStars(rating) {
+            const stars = document.querySelectorAll('.star');
+            stars.forEach(star => {
+                if (parseInt(star.dataset.value) <= rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+
+        // Отправка в TikTok (текст адаптирован для парня, который будет это отправлять)
+        function shareToTikTok() {
+            const text = `Я прочитал твое письмо, Нозанин! Оцениваю его на ${selectedRating} из 10 сердечек! ❤️`;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                alert("Твой ответ скопирован! Сейчас откроется TikTok, просто вставь этот текст в наш чат.");
+                window.location.href = "https://www.tiktok.com/";
+            }).catch(err => {
+                alert("Не удалось скопировать. Оценка: " + selectedRating);
+            });
+        }
+    </script>
+</body>
+</html>
